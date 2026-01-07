@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "passive_mode": true, 
+    "collect_js": true, 
+    "scope_only": true, 
+    "collect_html": false
+  }, 
+  "custom_endpoints": [], 
+  "version": "1.0", 
+  "custom_categories": {}, 
+  "custom_secrets": [], 
+  "custom_urls": []
+}
