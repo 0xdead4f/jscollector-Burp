@@ -2,7 +2,8 @@
 
 Passively collects **Secrets & Paths/URLs** from JavaScript files proxied through Burp Suite. Supports **custom regex patterns and categories**.
 
-<img width="1509" height="923" alt="image" src="https://github.com/user-attachments/assets/ce85fb8d-6353-4b83-a8a2-6467e20ca171" />
+
+https://github.com/user-attachments/assets/aeaf762f-14f7-4dd5-9c35-f9e4ac2359cc
 
 
 ## Features
