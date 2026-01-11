@@ -32,35 +32,44 @@ class PatternManager:
         """Initialize built-in patterns."""
         
         # ==================== ENDPOINT PATTERNS ====================
+        # Generic endpoint pattern based on LinkFinder regex
         self.builtin_endpoints = [
-            # API endpoints
-            (r'["\']((https?:)?//["\'][^"\']+/api/[a-zA-Z0-9/_-]+)["\']', "API URL"),
-            (r'["\'](/api/v?\d*/[a-zA-Z0-9/_-]{2,})["\']', "API Path"),
-            (r'["\'](/v\d+/[a-zA-Z0-9/_-]{2,})["\']', "Versioned Path"),
-            (r'["\'](/rest/[a-zA-Z0-9/_-]{2,})["\']', "REST Path"),
-            (r'["\'](/graphql[a-zA-Z0-9/_-]*)["\']', "GraphQL"),
+            # Full URL with scheme (http/https or protocol-relative //)
+            (r'''(?:"|')'''
+             r'''((?:[a-zA-Z]{1,10}://|//)'''  # Match a scheme [a-Z]*1-10 or //
+             r'''[^"'/]{1,}\.'''               # Match a domainname (any character + dot)
+             r'''[a-zA-Z]{2,}[^"']{0,})'''     # The domainextension and/or path
+             r'''(?:"|')''', "URL"),
             
-            # OAuth/Auth endpoints
-            (r'["\'](/oauth[0-9]*/[a-zA-Z0-9/_-]+)["\']', "OAuth"),
-            (r'["\'](/auth[a-zA-Z0-9/_-]*)["\']', "Auth"),
-            (r'["\'](/login[a-zA-Z0-9/_-]*)["\']', "Login"),
-            (r'["\'](/logout[a-zA-Z0-9/_-]*)["\']', "Logout"),
-            (r'["\'](/token[a-zA-Z0-9/_-]*)["\']', "Token"),
+            # Relative paths starting with /,../,./
+            (r'''(?:"|')'''
+             r'''((?:/|\.\./|\./)'''           # Start with /,../,./
+             r'''[^"'><,;| *()(%%$^/\\\[\]]''' # Next character can't be...
+             r'''[^"'><,;|()]{1,})'''          # Rest of the characters can't be
+             r'''(?:"|')''', "Relative Path"),
             
-            # Sensitive paths
-            (r'["\'](/admin[a-zA-Z0-9/_-]*)["\']', "Admin"),
-            (r'["\'](/dashboard[a-zA-Z0-9/_-]*)["\']', "Dashboard"),
-            (r'["\'](/internal[a-zA-Z0-9/_-]*)["\']', "Internal"),
-            (r'["\'](/debug[a-zA-Z0-9/_-]*)["\']', "Debug"),
-            (r'["\'](/config[a-zA-Z0-9/_-]*)["\']', "Config"),
-            (r'["\'](/backup[a-zA-Z0-9/_-]*)["\']', "Backup"),
-            (r'["\'](/private[a-zA-Z0-9/_-]*)["\']', "Private"),
-            (r'["\'](/upload[a-zA-Z0-9/_-]*)["\']', "Upload"),
-            (r'["\'](/download[a-zA-Z0-9/_-]*)["\']', "Download"),
+            # Relative endpoint with extension
+            (r'''(?:"|')'''
+             r'''([a-zA-Z0-9_\-/]{1,}/'''      # Relative endpoint with /
+             r'''[a-zA-Z0-9_\-/.]{1,}'''       # Resource name
+             r'''\.(?:[a-zA-Z]{1,4}|action)''' # Rest + extension (length 1-4 or action)
+             r'''(?:[\?|#][^"|']{0,}|))'''     # ? or # mark with parameters
+             r'''(?:"|')''', "Endpoint"),
             
-            # Well-known paths
-            (r'["\'](/\.well-known/[a-zA-Z0-9/_-]+)["\']', "Well-Known"),
-            (r'["\'](/idp/[a-zA-Z0-9/_-]+)["\']', "IDP"),
+            # REST API (no extension) with /
+            (r'''(?:"|')'''
+             r'''([a-zA-Z0-9_\-/]{1,}/'''      # REST API (no extension) with /
+             r'''[a-zA-Z0-9_\-/]{3,}'''        # Proper REST endpoints usually have 3+ chars
+             r'''(?:[\?|#][^"|']{0,}|))'''     # ? or # mark with parameters
+             r'''(?:"|')''', "REST API"),
+            
+            # Filename with common extensions
+            (r'''(?:"|')'''
+             r'''([a-zA-Z0-9_\-]{1,}'''        # filename
+             r'''\.(?:php|asp|aspx|jsp|json|'''
+             r'''action|html|js|txt|xml)'''   # . + extension
+             r'''(?:[\?|#][^"|']{0,}|))'''    # ? or # mark with parameters
+             r'''(?:"|')''', "File"),
         ]
         
         # ==================== URL PATTERNS ====================
