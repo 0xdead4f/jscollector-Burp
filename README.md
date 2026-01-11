@@ -2,6 +2,9 @@
 
 Passively collects **Secrets & Paths/URLs** from JavaScript files proxied through Burp Suite. Supports **custom regex patterns and categories**.
 
+<img width="1509" height="923" alt="image" src="https://github.com/user-attachments/assets/ce85fb8d-6353-4b83-a8a2-6467e20ca171" />
+
+
 ## Features
 
 - **Passive Collection** - Auto-analyzes JS responses through proxy
@@ -14,6 +17,7 @@ Passively collects **Secrets & Paths/URLs** from JavaScript files proxied throug
 1. Download [Jython standalone JAR](https://www.jython.org/download)
 2. In Burp: `Extensions > Extensions-Settings > Python Environment` → Set Jython path
 3. `Extensions > Installed > Add` → Select `Python` → Browse to `jscollector.py`
+4. Voilla! now you can browse normally while jscollector working automatically in the background collecting juicy stuff.
 
 ## Usage
 
